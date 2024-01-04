@@ -1,94 +1,59 @@
+/*
+
+This is an example that works with the NodeMCU board found here:
+https://www.aliexpress.us/item/3256805824888360.html
+
+OLED screen is 128x64 pixels and is connected via I2C
+The I2C pins are 14 (SDA) and 12 (SCL)
+
+*/
+
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
+#define WIRE Wire
 #define OLED_RESET -1
-
-// OLED FeatherWing buttons map to different pins depending on board.
-// The I2C (Wire) bus may also be different.
-#if defined(ESP8266)
-  #define BUTTON_A  0
-  #define BUTTON_B 16
-  #define BUTTON_C  2
-  #define WIRE Wire
-#elif defined(ESP32)
-  #define BUTTON_A 15
-  #define BUTTON_B 32
-  #define BUTTON_C 14
-  #define WIRE Wire
-#elif defined(ARDUINO_STM32_FEATHER)
-  #define BUTTON_A PA15
-  #define BUTTON_B PC7
-  #define BUTTON_C PC5
-  #define WIRE Wire
-#elif defined(TEENSYDUINO)
-  #define BUTTON_A  4
-  #define BUTTON_B  3
-  #define BUTTON_C  8
-  #define WIRE Wire
-#elif defined(ARDUINO_FEATHER52832)
-  #define BUTTON_A 31
-  #define BUTTON_B 30
-  #define BUTTON_C 27
-  #define WIRE Wire
-#elif defined(ARDUINO_ADAFRUIT_FEATHER_RP2040)
-  #define BUTTON_A  9
-  #define BUTTON_B  8
-  #define BUTTON_C  7
-  #define WIRE Wire1
-#else // 32u4, M0, M4, nrf52840 and 328p
-  #define BUTTON_A  9
-  #define BUTTON_B  6
-  #define BUTTON_C  5
-  #define WIRE Wire
-#endif
 
 Adafruit_SSD1306 display;
 
-void setup() {
-  Wire.begin(14,12);
-  display = Adafruit_SSD1306(128, 64, &WIRE);
-  Serial.begin(9600);
+void setup()
+{
+    Wire.begin(14, 12);
+    display = Adafruit_SSD1306(128, 64, &WIRE);
+    Serial.begin(9600);
 
-  // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
-  display.begin(SSD1306_SWITCHCAPVCC, 0x3C); // Address 0x3C for 128x32
+    // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
+    display.begin(SSD1306_SWITCHCAPVCC, 0x3C); // Address 0x3C for 128x32
 
-  Serial.println("OLED begun");
+    Serial.println("OLED init done");
 
-  // Show image buffer on the display hardware.
-  // Since the buffer is intialized with an Adafruit splashscreen
-  // internally, this will display the splashscreen.
-//   display.display();
-//   delay(1000);
+    // Clear the buffer, so it doesn't show the default image
+    display.clearDisplay();
+    display.display();
 
-  // Clear the buffer.
-//   display.clearDisplay();
-//   display.display();
-
-  Serial.println("IO test");
-
-  pinMode(BUTTON_A, INPUT_PULLUP);
-  pinMode(BUTTON_B, INPUT_PULLUP);
-  pinMode(BUTTON_C, INPUT_PULLUP);
-
-  // text display tests
-  display.setTextSize(1);
-  display.setTextColor(SSD1306_WHITE);
-  display.setCursor(0,0);
-  display.print("Connecting to SSID\n'adafruit':");
-  display.print("connected!");
-  display.println("IP: 10.0.1.23");
-  display.println("Sending val #0");
-  display.setCursor(0,0);
-  display.display(); // actually display all of the above
+    // text display tests
+    display.setTextSize(1);
+    display.setTextColor(SSD1306_WHITE);
+    display.setCursor(0, 0);
+    display.println("yellow 1"); // print() also works
+    display.println("yellow 2");
+    display.println("blue 1");
+    display.println("blue 2");
+    display.println("blue 3");
+    display.println("blue 4");
+    display.println("blue 5");
+    display.println("blue 6");
+    display.setCursor(0, 0);
+    // display.println("overwrote");
+    display.display(); // actually display all of the above
 }
 
-void loop() {
-  if(!digitalRead(BUTTON_A)) display.print("A");
-  if(!digitalRead(BUTTON_B)) display.print("B");
-  if(!digitalRead(BUTTON_C)) display.print("C");
-  delay(10);
-  yield();
-  display.display();
+void loop()
+{
+    // display.print("overwrote");
+    // delay(10);
+    // yield();
+    // display.display();
 }
