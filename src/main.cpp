@@ -130,6 +130,7 @@ void rotaryA(OSCMessage &msg) {
 // and show it in big letters
 void encoderM(OSCMessage &msg) {
     float val = msg.getFloat(0);
+    display.fillRect(38, 44, 90, 20, SSD1306_BLACK); // clear the area
     display.setCursor(38, 44);
     display.setTextSize(3);
     if (val == 0) display.print(--counter);
